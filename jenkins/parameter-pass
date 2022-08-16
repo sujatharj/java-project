@@ -1,5 +1,5 @@
 pipeline {
-agent any
+agent non
 properties([parameters([choice(choices: ['build', 'deploy', 'test'], name: 'STAGE')])])
 stages {
   stage('BUILD') {
@@ -21,7 +21,7 @@ stages {
       }
 
   stage('DEPLOY') {
-   agent any
+   agent {lable 'slave-node1'}
     steps {
      script {
     if (params.STAGE=='deploy')
@@ -34,7 +34,7 @@ stages {
    }
 
   stage('TEST') {
-  agent any
+  agent {lable 'slave-node1'}
     steps {
     script {
     if (params.STAGE=='test') {
