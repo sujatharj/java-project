@@ -1,0 +1,46 @@
+pipeline {
+agent any
+properties([parameters([choice(choices: ['build', 'deploy', 'test'], name: 'STAGE')])])
+stages {
+  stage('BUILD') {
+      agent any
+        steps {
+          script {
+    	     if (params.STAGE=='build')
+    
+                 git branch: 'main', url: 'https://github.com/sujatharj/java-project.git'
+                  sh '''
+                  #!/bin/bash
+         	     pwd
+    	             ls
+	     echo "this is build stage"
+    		 '''
+     		}
+     	     }
+    	 }
+      }
+
+  stage('DEPLOY') {
+   agent any
+    steps {
+     script {
+    if (params.STAGE=='deploy')
+    {
+      echo "this is deploy stage"
+      sh 'sleep 5'
+  	   }
+    	}
+      }  
+   }
+
+  stage('TEST') {
+  agent any
+    steps {
+    script {
+    if (params.STAGE=='test') {
+     sh 'echo "this is test stage"'
+    	}
+      }
+    }
+  }
+}
